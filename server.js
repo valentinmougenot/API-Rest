@@ -1,24 +1,20 @@
 import express from "express";
 import dotenv from "dotenv";
-import { readFileSync } from "fs";
+import bodyParser from 'body-parser';
+
 import {default as laureateRoutes} from "./routes/laureates.router.js";
+import {default as prizeRoutes} from "./routes/prize.router.js";
 
 const app = express();
 dotenv.config();
 
 const port = process.env.PORT;
 
-const data = JSON.parse(readFileSync("prize.json"));
+app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello express');
-});
-
-app.get('/laureates', laureateRoutes);
-
-
-app.get('/laureate/:id', laureateRoutes);
+app.use('/laureates', laureateRoutes);
+app.use('/prize', prizeRoutes);
 
 app.listen(port, () => {
     console.log(`Le serveur écoute sur le port ${port}`);
-})
+});
