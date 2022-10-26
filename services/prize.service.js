@@ -17,7 +17,7 @@ export const countPrize = (callback) => {
     }
 }
 
-export const getDuplicateNobel = (callback) => {
+export const getMultipleNobel = (callback) => {
     try {
         let duplicateNobels = [];
         let nobels = [];
@@ -214,7 +214,6 @@ export const getPrizesId = (id, callback) => {
             if (element.laureates !== undefined) {
                 element.laureates.forEach((laureate) => {
                     if (laureate.id === id) {
-                        console.log(laureate);
                         if (prizes === null) {
                             prizes = {
                                 firstname: laureate.firstname,
@@ -254,8 +253,6 @@ export const getNoNobelYears = (callback) => {
                 noNobelsYears.push(element.year);
             }
         });
-        console.log(nobelsYears);
-        console.log(noNobelsYears);
         return callback(null, noNobelsYears);
     }
     catch(e) {
@@ -268,7 +265,6 @@ export const getNoNobelYears = (callback) => {
 export const getNobelsByYearSorted = (sort, callback) => {
     try {
         const years = getNobelsYears2();
-        console.log(years);
         if (sort === '-laureates') {
             years.sort((a, b) => {
                 if (a.count > b.count) {

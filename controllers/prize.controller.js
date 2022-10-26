@@ -1,4 +1,4 @@
-import {countPrize, getDuplicateNobel, getCategories, getBestCategory, getBestYear, getNobelsYears, getPrizesId, getNoNobelYears, getNobelsByYearSorted} from '../services/prize.service.js';
+import {countPrize, getMultipleNobel, getCategories, getBestCategory, getBestYear, getNobelsYears, getPrizesId, getNoNobelYears, getNobelsByYearSorted} from '../services/prize.service.js';
 
 export const count = (req, res) => {
     countPrize((error, result) => {
@@ -9,8 +9,8 @@ export const count = (req, res) => {
     })
 }
 
-export const duplicateNobels = (req, res) => {
-    getDuplicateNobel((error, result) => {
+export const multipleNobels = (req, res) => {
+    getMultipleNobel((error, result) => {
         if (error) {
             return res.status(400).send({success: 0, data: error});
         }

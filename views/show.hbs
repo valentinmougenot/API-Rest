@@ -1,0 +1,39 @@
+<h1 style="text-align:center">Lauréats</h1>
+<h1>{{category}}</h1>
+<select class="form-control">
+    {{#each categories}}
+    <option value="{{this}}">{{this}}</option>
+    {{/each}}
+</select>
+<br>
+<div class="text-center">
+    <button onclick="changeLocation()" class="btn btn-success">Change</button>
+    <br>
+    <a href="/vue/add" class="btn btn-primary" style="margin: 15px">Add a laureate</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Firstname</th>
+            <th scope="col">Lastname</th>
+            <th scope="col">Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each laureates}}
+        <tr>
+            <td>{{this.firstname}}</td>
+            <td>{{this.surname}}</td>
+            <td>{{this.year}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script>
+    changeLocation = (loc) => {
+        let category = document.querySelector('.select-category').value;
+        window.location.href = `http://localhost:3000/vue?category=${category}`;
+    }
+</script>
