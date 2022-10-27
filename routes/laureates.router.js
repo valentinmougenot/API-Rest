@@ -8,7 +8,7 @@ router.get('/', list);
  * @swagger
  * /laureates:
  *      get:
- *          description: Use to request all laureates
+ *          description: Use to request all laureates (F1)
  *          tags:
  *              - laureates
  *          parameters:
@@ -36,7 +36,7 @@ router.get('/count', count);
  * @swagger
  * /laureates/count:
  *      get:
- *          description: Use to request the number of laureates
+ *          description: Use to request the number of laureates (F4)
  *          tags:
  *              - laureates
  *          responses:
@@ -53,23 +53,23 @@ router.get('/filter', filter);
  * @swagger
  * /laureates/filter:
  *      get:
- *          description: Use to request laureates filtered by year, category or country
+ *          description: Use to request laureates filtered by firstname, surname or category (F12)
  *          tags:
  *              - laureates
  *          parameters:
  *              - in: query
- *                name: year
- *                description: year of the prize
+ *                name: firstname
+ *                description: firstname of the laureate
  *                required: false
- *                type: integer
+ *                type: string
+ *              - in: query
+ *                name: surname
+ *                description: surname of the laureate
+ *                required: false
+ *                type: string
  *              - in: query
  *                name: category
- *                description: category of the prize
- *                required: false
- *                type: integer
- *              - in: query
- *                name: country
- *                description: country of the laureate
+ *                description: category of the laureate
  *                required: false
  *                type: string
  *          responses:
@@ -85,7 +85,7 @@ router.get('/:id', showLaureate);
  * @swagger
  * /laureates/{id}:
  *      get:
- *          description: Use to request a laureate
+ *          description: Use to request a laureate (F2)
  *          tags:
  *              - laureates
  *          parameters:
@@ -102,20 +102,38 @@ router.get('/:id', showLaureate);
  *              '500':
  *                  description: Internal server error
  */
-router.delete('/:id', delLaureate);
+router.delete('/', delLaureate);
 /**
  * @swagger
- * /laureates/{id}:
+ * /laureates:
  *      delete:
- *          description: Use to delete a laureate
+ *          description: Use to delete a laureate (F13)
  *          tags:
  *              - laureates
  *          parameters:
- *              - in: path
- *                name: id
- *                description: id of the laureate
- *                required: true
- *                type: integer
+ *               - in: body
+ *                 name: Laureate
+ *                 description: Laureate object
+ *                 schema:
+ *                     type: object
+ *                     required:
+ *                         - id
+ *                         - year
+ *                         - category
+ *                     properties:
+ *                         id:
+ *                             type: integer
+ *                             example: 1007
+ *                         year:
+ *                             type: string
+ *                             minimum: 1901
+ *                             maximum: 2021
+ *                             example: 2018
+ *                         category:
+ *                             type: string
+ *                             minLength: 1
+ *                             maxLength: 45
+ *                             example: physics
  *          responses:
  *              '200':
  *                  description: A laureate deleted successfully
@@ -124,32 +142,43 @@ router.delete('/:id', delLaureate);
  *              '500':
  *                  description: Internal server error
  */
-router.put('/:id', updLaureate);
+router.put('/', updLaureate);
 /**
  * @swagger
- * /laureates/{id}:
+ * /laureates:
  *      put:
- *          description: Use to update the motivation of a laureate
+ *          description: Use to update the motivation of a laureate (F14)
  *          tags:
  *              - laureates
  *          parameters:
- *              - in: path
- *                name: id
- *                description: id of the laureate
- *                required: true
- *                type: integer
- *              - in: body
- *                name: Motivation
- *                description: Motivation object
- *                schema:
+ *               - in: body
+ *                 name: Laureate
+ *                 description: Laureate object
+ *                 schema:
  *                     type: object
  *                     required:
+ *                         - id
+ *                         - year
+ *                         - category
  *                         - motivation
  *                     properties:
- *                         motivation:
+ *                         id:
+ *                             type: integer
+ *                             example: 1007
+ *                         year:
+ *                             type: string
+ *                             minimum: 1901
+ *                             maximum: 2021
+ *                             example: 2018
+ *                         category:
  *                             type: string
  *                             minLength: 1
  *                             maxLength: 45
+ *                             example: physics
+ *                         motivation:
+ *                             type: string
+ *                             minLength: 1
+ *                             maxLength: 255
  *                             example: for their discoveries concerning the structural and functional organization of the cell
  *          responses:
  *              '200':
@@ -164,7 +193,7 @@ router.post('/', adLaureate);
  * @swagger
  * /laureates:
  *      post:
- *          description: Use to add a laureate
+ *          description: Use to add a laureate (F15)
  *          tags:
  *              - laureates
  *          parameters:
@@ -176,6 +205,7 @@ router.post('/', adLaureate);
  *                     required:
  *                         - firstname
  *                         - surname
+ *                         - motivation
  *                         - year
  *                         - category
  *                     properties:
@@ -189,6 +219,11 @@ router.post('/', adLaureate);
  *                             minLength: 1
  *                             maxLength: 45
  *                             example: Bond
+ *                         motivation:
+ *                             type: string
+ *                             minLength: 1
+ *                             maxLength: 255
+ *                             example: for their discoveries concerning the structural and functional organization of the cell
  *                         year:
  *                             type: string
  *                             minimum: 1901

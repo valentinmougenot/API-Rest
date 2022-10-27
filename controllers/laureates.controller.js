@@ -38,7 +38,7 @@ export const showLaureate = (req, res) => {
 }
 
 export const delLaureate = (req, res) => {
-    deleteLaureate(req.params.id, (error, results) => {
+    deleteLaureate(req, (error, results) => {
         if (error) {
             res.status(400).send({success: 0, data: error});
         }

@@ -84,15 +84,43 @@ export const countLaureates = (callback) => {
 
 export const filterLaureates =(req, callback) => {
     try {
-        var laureates = JSON.parse(dataBuffer.toString());
+        let dataJSON = dataBuffer.toString();
+        dataJSON = JSON.parse(dataJSON);
+        var laureates = [];
+        dataJSON.forEach((element) => {
+            if (element.laureates !== undefined) {
+                element.laureates.forEach((laureate) => {
+                    if (!laureates.find((l) => l.id === laureate.id || l.category === laureate.category)) {
+                        laureates.push({
+                            id: laureate.id,
+                            firstname: laureate.firstname,
+                            surname: laureate.surname,
+                            category: element.category,
+                        });
+                    }
+                });
+            }
+        });
+
         if (req.query.firstname !== undefined) {
-            laureates = filterFirstname(laureates, req.query.firstname);
+            for(var i = 0; i < laureates.length; ++i) {
+                if (laureates[i].firstname.toLowerCase() !== req.query.firstname.toLowerCase()) {
+                    laureates.splice(i, 1);
+                    --i;
+                }
+            }
         }
         if (req.query.surname !== undefined) {
-            laureates = filterSurname(laureates, req.query.surname);
+            if (laureates[i].surname !== undefined &&  laureates[i].surname.toLowerCase() !== req.query.surname.toLowerCase()) {
+                laureates.splice(i, 1);
+                --i;
+            }
         }
         if (req.query.category !== undefined) {
-            laureates = filterCategory(laureates, req.query.category);
+            if (laureates[i].category.toLowerCase() !== req.query.category.toLowerCase()) {
+                laureates.splice(i, 1);
+                --i;
+            }
         }
         return callback(null, laureates);
     }
@@ -102,84 +130,28 @@ export const filterLaureates =(req, callback) => {
     }
 }
 
-const filterFirstname = (laureates, firstname) => {
-    firstname = firstname.toLowerCase();
-    let returnLaureates = [];
-    laureates.forEach((element) => {
-        if (element.laureates !== undefined) {
-            element.laureates.forEach((laureate) => {
-                if (laureate.firstname.toLowerCase() === firstname) {
-                    if (!returnLaureates.find((l) => l.id === laureate.id)) {
-                        returnLaureates.push({
-                            id: laureate.id,
-                            firstname: laureate.firstname,
-                            surname: laureate.surname
-                        });
-                    }
-                }
-            }
-            )
-        }
-    });
-    return returnLaureates;
-}
-
-const filterSurname = (laureates, surname) => {
-    let returnLaureates = [];
-    laureates.forEach((element) => {
-        if (element.laureates !== undefined) {
-            element.laureates.forEach((laureate) => {
-                if (laureate.surname !== undefined && laureate.surname.toLowerCase() === surname) {
-                    if (!returnLaureates.find((l) => l.id === laureate.id)) {
-                        returnLaureates.push({
-                            id: laureate.id,
-                            firstname: laureate.firstname,
-                            surname: laureate.surname
-                        });
-                    }
-                }
-            }
-            )
-        }
-    });
-    return returnLaureates;
-}
-
-const filterCategory = (laureates, category) => {
-    let returnLaureates = [];
-    laureates.forEach((element) => {
-        if (element.category.toLowerCase() === category) {
-            if (element.laureates !== undefined) {
-                element.laureates.forEach((laureate) => {
-                    if (!returnLaureates.find((l) => l.id === laureate.id)) {
-                        returnLaureates.push({
-                            id: laureate.id,
-                            firstname: laureate.firstname,
-                            surname: laureate.surname
-                        });
-                    }
-                }
-                )
-            }
-        }
-    });
-    return returnLaureates;
-}
-
-export const deleteLaureate = (id, callback) => {
+export const deleteLaureate = (req, callback) => {
     try {
+        const id = req.body.id.toString();
+        const year = req.body.year;
+        const category = req.body.category;
+        let found = false;
         let dataJSON = dataBuffer.toString();
         dataJSON = JSON.parse(dataJSON);
         dataJSON.forEach((element) => {
             if (element.laureates !== undefined) {
                 for(var i = 0; i < element.laureates.length; ++i) {
-                    if (element.laureates[i].id === id) {
+                    if (element.laureates[i].id === id && element.year === year && element.category === category) {
                         element.laureates.splice(i, 1);
+                        found = true;
                         break;
                     }
                 }
             }
         });
+        if (!found) {
+            return callback([]);
+        }
         fs.writeFileSync("prize.json", JSON.stringify(dataJSON));
         return callback(null, dataJSON);
     }
@@ -191,20 +163,26 @@ export const deleteLaureate = (id, callback) => {
 
 export const updateLaureate = (req, callback) => {
     try {
-        const id = req.params.id;
+        const id = req.body.id.toString();
+        const year = req.body.year;
+        const category = req.body.category.toLowerCase();
         const motivation = req.body.motivation;
-        console.log(motivation);
+        let found = false;
         let dataJSON = dataBuffer.toString();
         dataJSON = JSON.parse(dataJSON);
         dataJSON.forEach((element) => {
             if (element.laureates !== undefined) {
                 element.laureates.forEach((laureate) => {
-                    if (laureate.id === id) {
+                    if (laureate.id === id && element.year === year && element.category === category) {
                         laureate.motivation = motivation;
+                        found = true;
                     }
                 });
             }
         });
+        if (!found) {
+            return callback([]);
+        }
         fs.writeFileSync("prize.json", JSON.stringify(dataJSON));
         return callback(null, dataJSON);
     }
@@ -220,6 +198,8 @@ export const addLaureate = (req, callback) => {
         const surname = req.body.surname;
         const year = req.body.year;
         const category = req.body.category.toLowerCase();
+        const motivation = req.body.motivation;
+        let canAdd = false;
         let dataJSON = dataBuffer.toString();
         dataJSON = JSON.parse(dataJSON);
 
@@ -245,18 +225,24 @@ export const addLaureate = (req, callback) => {
                     element.laureates.push({
                         id: (maxId + 1).toString(),
                         firstname: firstname,
-                        surname: surname
+                        surname: surname,
+                        motivation: motivation
                     });
                 }
                 else {
                     element.laureates = [{
                         id: (maxId + 1).toString(),
                         firstname: firstname,
-                        surname: surname
+                        surname: surname,
+                        motivation: motivation
                     }];
                 }
+                canAdd = true;
             }
         });
+        if (!canAdd) {
+            return callback([]);
+        }
         fs.writeFileSync("prize.json", JSON.stringify(dataJSON));
         return callback(null, dataJSON);
 

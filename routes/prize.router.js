@@ -8,7 +8,7 @@ router.get("/count", count);
  * @swagger
  * /prize/count:
  *      get:
- *          description: Use to request the number of nobels
+ *          description: Use to request the number of nobels (F3)
  *          tags:
  *             - prize
  *          responses:
@@ -24,7 +24,7 @@ router.get("/multiple-nobels", multipleNobels);
  * @swagger
  * /prize/multiple-nobels:
  *     get:
- *         description: Use to request laureates with multiple nobels
+ *         description: Use to request laureates with multiple nobels (F5)
  *         tags:
  *             - prize
  *         responses:
@@ -40,7 +40,7 @@ router.get("/categories", categories);
  * @swagger
  * /prize/categories:
  *     get:
- *         description: Use to request the categories of nobels
+ *         description: Use to request the categories of nobels (F6)
  *         tags:
  *             - prize
  *         responses:
@@ -56,7 +56,7 @@ router.get("/best-category", bestCategory);
  * @swagger
  * /prize/best-category:
  *      get:
- *          description: Use to request the category with the most nobels
+ *          description: Use to request the category with the most nobels (F7)
  *          tags:
  *             - prize
  *          responses:
@@ -88,7 +88,7 @@ router.get("/nobels-years", nobelsYears);
  * @swagger
  * /prize/nobels-years:
  *     get:
- *         description: Use to request the nobels by year
+ *         description: Use to request the nobels by year (F8)
  *         tags:
  *             - prize
  *         responses:
@@ -104,7 +104,7 @@ router.get("/no-nobel-years", noNobelYears);
  * @swagger
  * /prize/no-nobel-years:
  *     get:
- *         description: Use to request the years without nobels
+ *         description: Use to request the years without nobels (F10)
  *         tags:
  *             - prize
  *         responses:
@@ -120,7 +120,7 @@ router.get("/nobels-by-year", nobelsByYearSorted);
  * @swagger
  * /prize/nobels-by-year:
  *     get:
- *         description: Use to request the nobels by year sorted
+ *         description: Use to request the nobels by year sorted (F11)
  *         tags:
  *             - prize
  *         parameters:
@@ -141,7 +141,7 @@ router.get("/:id", prizesId);
  * @swagger
  * /prize/{id}:
  *     get:
- *         description: Use to request every prize with the given laureate id
+ *         description: Use to request every prize with the given laureate id (F9)
  *         tags:
  *             - prize
  *         parameters:

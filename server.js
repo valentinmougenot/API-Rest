@@ -56,6 +56,14 @@ app.use('/laureates', laureateRoutes);
 app.use('/prize', prizeRoutes);
 app.use('/vue', vueRoutes);
 
+app.get('/', (req, res) => {
+    res.redirect('/vue');
+});
+
+app.use('*', (req, res) => {
+    res.status(404).render('err404');
+});
+
 app.listen(port, () => {
     console.log(`Le serveur écoute sur le port ${port}`);
 });

@@ -1,5 +1,4 @@
-import { getLaureatesByCategory, getCateg, addLaureate } from "../services/vue.service.js";
-import {checkYear, checkName, checkMotivation} from "../middlewares/validatorAdd.js";
+import {getLaureatesByCategory, getCateg, addLaureate} from "../services/vue.service.js";
 
 export const laureatesByCategory = (req, res) => {
     getLaureatesByCategory(req, (error, results) => {
@@ -19,13 +18,11 @@ export const showAddLaureate = (req, res) => {
     })
 }
 
-export const addLaur = (req, res, next) => {
-    if (checkYear(req, res, next) && checkName(req, res, next) && checkMotivation(req, res, next)) {
-        addLaureate(req, (error, results) => {
-            if (error) {
-                res.status(400).send({success: 0, data: error});
-            }
-            return res.status(200).redirect('/vue?category=' + results.category);
-        })
-    }
+export const addLaur = (req, res) => {
+    addLaureate(req, (error, results) => {
+        if (error) {
+            res.status(400).send({success: 0, data: error});
+        }
+        return res.status(200).redirect('/vue?category=' + results.category);
+    })
 }

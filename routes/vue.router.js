@@ -3,6 +3,8 @@ const router = express.Router();
 
 import {laureatesByCategory, showAddLaureate, addLaur} from "../controllers/vue.controller.js";
 
+import {validateAdd} from "../middlewares/validatorAdd.js";
+
 router.get('/', laureatesByCategory);
 /**
  * @swagger
@@ -43,7 +45,7 @@ router.get('/add', showAddLaureate);
  *                 description: Internal server error
  */
 
-router.post('/', addLaur);
+router.post('/', validateAdd, addLaur);
 /**
  * @swagger
  * /vue/add:
