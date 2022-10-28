@@ -48,7 +48,7 @@ router.get('/add', showAddLaureate);
 router.post('/', validateAdd, addLaur);
 /**
  * @swagger
- * /vue/add:
+ * /vue:
  *      post:
  *          description: Use to add a laureate
  *          tags:

@@ -129,47 +129,6 @@ export const getBestCategory = (callback) => {
     }
 }
 
-export const getBestYear = (callback) => {
-    try {
-        let years = [];
-        dataJSON.forEach((element) => {
-            if (element.year !== undefined) {
-                if (years.find((year) => year.name === element.year)) {
-                    years.forEach((year) => {
-                        if (year.name === element.year && element.laureates !== undefined) {
-                            year.count += element.laureates.length;
-                        }
-                    });
-                }
-                else {
-                    if (element.laureates !== undefined) {
-                        years.push({
-                            name: element.year,
-                            count: element.laureates.length
-                        });
-                    }
-                    else {
-                        years.push({
-                            name: element.year,
-                            count: 0
-                        });
-                    }
-                }
-            }
-        });
-        let bestYear = years[0];
-        years.forEach((year) => {
-            if (year.count > bestYear.count) {
-                bestYear = year;
-            }
-        });
-        return callback(null, bestYear);
-    }
-    catch(e) {
-        console.log(e);
-        return callback([]);
-    }
-}
 
 export const getNobelsYears = (callback) => {
     try {

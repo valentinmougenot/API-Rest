@@ -1,6 +1,6 @@
 <h1 style="text-align:center">Lauréats</h1>
 <h1>{{category}}</h1>
-<select class="form-control">
+<select class="form-control select-category">
     {{#each categories}}
     <option value="{{this}}">{{this}}</option>
     {{/each}}
@@ -32,8 +32,9 @@
 </table>
 
 <script>
-    changeLocation = (loc) => {
+    changeLocation = () => {
         let category = document.querySelector('.select-category').value;
+        console.log(category);
         window.location.href = `http://localhost:3000/vue?category=${category}`;
     }
 </script>

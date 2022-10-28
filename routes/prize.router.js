@@ -1,5 +1,5 @@
 import express from "express";
-import {count, multipleNobels, categories, bestCategory, bestYear, nobelsYears, prizesId, noNobelYears, nobelsByYearSorted} from "../controllers/prize.controller.js";
+import {count, multipleNobels, categories, bestCategory, nobelsYears, prizesId, noNobelYears, nobelsByYearSorted} from "../controllers/prize.controller.js";
 
 var router = express.Router();
 
@@ -67,22 +67,7 @@ router.get("/best-category", bestCategory);
  *              '500':
  *                  description: Internal server error
  */
-router.get("/best-year", bestYear);
-/**
- * @swagger
- * /prize/best-year:
- *      get:
- *          description: Use to request the year with the most nobels
- *          tags:
- *              - prize
- *          responses:
- *              '200':
- *                  description: The year with the most nobels
- *              '400':
- *                  description: Bad request
- *              '500':
- *                  description: Internal server error
- */
+
 router.get("/nobels-years", nobelsYears);
 /**
  * @swagger

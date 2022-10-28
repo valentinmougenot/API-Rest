@@ -30,7 +30,10 @@ export const readLaureate = (id, callback) => {
         if (element.laureates != null) {
             element.laureates.forEach((l) => {
                 if (l.id == id) {
-                    laureate = l;
+                    laureate = {
+                        firstname: l.firstname,
+                        surname: l.surname
+                    };
                 }
             });
         }
